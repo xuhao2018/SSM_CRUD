@@ -1,0 +1,424 @@
+
+
+ 创建 项目 步骤：
+ 
+          1.创建Maven 工程
+          
+          2.引入 项目 所需的jar 包
+          
+           在 settings.xml 配置：
+           
+          配置 仓库 镜像 
+          
+          镜像可以 拦截 发送到 某个 仓库的请求
+          从自己的仓库中 找 东西 返回
+          
+      <mirror>
+      <id>alimaven</id>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>central</mirrorOf>  拦截 中央仓库       
+      central 表示该配置为中央仓库的镜像，任何对于中央仓库的请求都会转至该镜像
+      
+    </mirror>
+
+
+ 配置 jdk：
+ 
+ <profile>    
+      <id>jdk-1.8</id>    
+       <activation>    
+            <activeByDefault>true</activeByDefault>    
+           <jdk>1.8</jdk>    
+        </activation>    
+  <properties>    
+  <maven.compiler.source>1.8</maven.compiler.source>    
+ <maven.compiler.target>1.8</maven.compiler.target>    
+ <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>    
+ </properties>    
+ </profile> 
+ 
+ 
+ 
+ 
+      
+ 
+ 
+        引入 项目的jar 包
+        
+        spring
+        spring-mvc
+        
+        数据库连接池
+        驱动包.....
+        
+        发现 jar  或者 源码 有问题 
+        直接 在 本地 仓库 删除 重新下载
+        
+        
+        
+        引入 bootstrap 前端 框架
+         
+        
+        
+        编写 SSM 整合的配置 文件
+        
+        
+        
+        
+        
+        创建员工表：
+        
+         create table tb_emp(
+          emp_id int primary key auto_increment, 
+          emp_name varchar(64) not null,
+          emp_gender char(1) not null ,
+          emp_email varchar(64) not null,
+          dept_id  int ,
+          foreign key(dept_id) references tb_dept(dept_id)
+         );
+        
+        
+           
+           
+           create table tb_dept(
+            dept_id int primary key auto_increment,
+            dept_name varchar(64) not null 
+           )
+        
+      
+ 
+      使用mybatis 的逆向工程
+      生成 对应的表和数据
+      bean 以及 mapper
+      
+      
+       resultMap高级映射注意点：
+       
+       <association>      /*关联其他的对象*/  
+</association>  
+<collection>       /*关联其他的对象集合*/  
+</collection>  
+ 
+ 
+ 
+
+
+ 测试 mybatis crud 方法
+ 
+ 
+ 
+ Spring推荐使用spring 单元测试 
+ 1.导入spring 单元测试包
+ 
+ 2.使用@ContextConfiguration 指定spring配置文件位置
+ 自动创建 spring ioc 容器
+@RunWith(SpringJUnit4ClassRunner.class)指定单元测试模块为spring
+ 
+ 3.使用autowire 等 就可以 注入 要使用的组件。。。
+ 
+ 
+ 
+ 
+ 
+ 查询 员工数据
+ 
+ 1.访问 index.jsp页面
+ 
+ 2.index.jsp 页面 发送  请求 查询 员工列表
+ 
+ 3.控制器 接受 请求  ，查出员工数据
+ 
+ 4.回显 到 list页面展示数据
+ 
+ 
+ 
+ 
+ 引入 pageHelper 分页插件
+ 在mybatis 全局 配置 文件 中注册 插件
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ web 路径：
+        1. 开头不带 / 的 资源
+        以 当前  资源 路径 为 基准 的相对路径
+        如果转发 特别 容易 出问题
+        
+        
+        2.带 /
+         以 web 应用根路径 为基准 的相对 路径
+         
+         
+         
+         
+         
+         查询  ajax
+         index.jsp 页面直接 发起 ajax请求
+          进行 员工分页的查询
+          
+          
+          服务器 将 查出的数据 以 jason 字符串的形式 返回给 浏览器
+          
+          浏览器收到 json 字符串
+          使用 js 对 json 进行解析
+          
+          使用js 通过 Dom 增删改 形式 改变 页面
+          
+          
+          
+          使用@reponseBody 将 对象 解析为 json字符串
+          
+          需要导入 <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.5</version>
+</dependency>
+          
+          
+          
+          
+          
+          
+          新增：
+          
+          在 index.jsp页面 点击 新增 
+          弹出 新增 对话框
+          
+          去数据库查询 部门列表 并显示在 对话框中
+          
+          用户输入 数据
+          
+          uri 
+          /emp  get 查询
+                post 新增
+                delete  删除
+                put 修改
+          
+          
+          
+          前端校验：
+          ajax 和 用户名 前端 校验
+          
+          后端校验：
+          重要的数据 都应该加上 后端 校验
+          SpringMVC(JSR303)
+          
+          要支持 jsr303要导入 hibernate -validator
+          Tomcat 7以 以上 直接导入
+          tomcat 以下 el表达式不强大
+          需要给 lib包中替换新的  el
+          
+          
+          给 类的字段添加 属性 校验
+          并且在 需要 校验的参数 上 加上 @Valid() 这个参数是有校验属性的对象
+          并且 还需要 配置 BindingResult 参数使用
+          用于返回校验结果
+          
+          
+          
+          
+          
+          
+          jQuery prop 和 attr 的区别
+          
+          根据官方的建议：
+          具有 true 和 false 两个属性的属性，如 checked, selected 或者 disabled 使用prop()，
+          其他的使用 attr()
+          
+          
+          
+          总结： 
+          
+1 如果想要通过attr()获取属性值，那么该属性必须显式的设置在HTML代码中或者通过attr新增的属性才能被获取到，
+如果没有设置，那么将返回undefined 
+
+
+2 如果通过prop（）获取属性值，那么该属性只能是HTMl的固有属性，无论是否显式的设置，
+都可以获取其对应的属性值，如果是额外增加的属性，那么将无法获取
+          
+          
+          
+          
+         
+         
+ 
+ 
+ 
+ 
+ 
+  修改 员工信息：
+  
+  点击编辑 弹出 用户修改的模态框(显示员工信息)
+  点击  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Employee [empId=1032, empName=null, empGender=null, empEmail=null, department=null]
+ empEmail=qweqwx%4011.com&empGender=M&deptId=1
+ 
+ 
+  jQuery ajax 直接发送 type=put 的请求
+   参数 数据 无法 封装到 对象 中的原因：
+   
+    Tomcat将 请求体 中的数据 封装 成一个 Map
+    
+    request.getParamter("")从这个map 中取值
+    
+    Springmvc 封装 POJO 对象 的时候
+    会 把 POJO 中 每个属性 值  request.getparameter("")取值
+    
+    
+    
+    Ajax 不能 直接 发送put 请求
+    type 只能 是 get 或者 post
+    Tomcat 不会 封装  put 请求 的 数据
+    
+    只有 post 或者 get 才会 封装 请求体
+    为 Map
+    
+    
+    解决方案：
+    
+    在web.xml 中 配置  HttpPutFormContentFilter过滤器
+    
+    
+    
+    
+    
+     删除逻辑：
+     
+       单个删除：
+        /emp/{empId} delete请求
+        
+        
+        
+       
+       通过 jQuery 选择 被 选中 的 表单 元素
+       
+       :selected	$(":selected")	所有被选取的 input 元素
+       :checked  	$(":checked")	所有被选中的 input 元素
+       
+       
+  
+ 
+ 
+ 
+ 
+      SSM-CRUD 总结：
+      
+       UI 界面 ：bootstrap 快速 搭建 界面
+       
+             后端 ：  SSM
+       
+       
+       
+          UI前端---------------->  SpingMVC  ----------------->Handler 
+                                                             前端控制器                                    |
+                                     |                      service     
+                                     |                         | 
+                                     |                        dao(mybatis) ---------------->XXMapper-------------->DB
+                                  不能 处理的请求 交给 Web服务器                                                                                  mybatis-generator
+                     <mvc:default-servlet-handler/>                                          自动生成            
+                                                                                                                                                    复杂 查询 基于 Mapper 
+                                                                                                                                                     自定义封装结果resultMap
+                                                                                                                                                 
+                                                                                                                                                 
+                                                                                                                                                 
+                                                                                                                                                 项目启动 Spring 自动扫描每一个 Mapper接口 
+                                                                                                                                                 需要配置 org.mybatis.spring.SqlSessionFactoryBean
+                                                                                                                                                 需要mybatis 和spring 的整合包 中的这个 工厂Bean
+                                                                                                                                                 这个工厂Bean 可以 扫描  Mapper 文件
+                                                                                                                                                 
+                                                                                                                                                 
+                                                                                                                                                 
+        		组件  都是  放在 Spring 的容器内
+            查出的 结果 返回给 用户
+            前端通过 ajax 请求 发送 请求 
+            得到数据
+            处理后的结果可以 返回一个 json 字符串
+            给前端页面
+            
+            前端 可以 使用 js 解析 json 数据
+            在页面显示
+            
+            
+            
+            整个项目 使用Maven 来 构建和 管理jar 包 依赖
+            
+            
+            使用Maven 生成war包
+            
+            将war 包 放在 Web 服务器中
+            即 Tomcat 的 服务器 中(webapps目录下)
+            
+            启动Tomcat  startup.bat
+            url 中 web 应用访问名称 就是 war包的名称
+            
+            可以通过修改war包的名称 来 改变web 应用名称
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                    		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		
+        		                                                                                                                                                 
+                                            
+                                            
+                                            
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
